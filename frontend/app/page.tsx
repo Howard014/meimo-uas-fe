@@ -1,29 +1,69 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import "./page.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+interface Comment {
+  name: string;
+  text: string;
+  date: string;
+}
+
 export default function Home() {
-  // State untuk modal & rating
-  const [showModal, setShowModal] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
-  const [comments, setComments] = useState([
-    { name: "Admin", text: "Contoh komentar pertama.", date: "Oct 29, 2025, 09:07 PM" },
-  ]);
+  // State untuk modal, rating, dan komentar
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [rating, setRating] = useState<number>(0);
+  const [hoverRating, setHoverRating] = useState<number>(0);
+  const [comments, setComments] = useState<Comment[]>([]);
 
-  // Tambah komentar
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // 🔹 Load komentar dari LocalStorage saat halaman pertama kali dibuka
+useEffect(() => {
+  if (typeof window !== "undefined") {
+    const stored = localStorage.getItem("meimo_comments");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        // Pakai setTimeout agar tidak dianggap “synchronous update”
+        setTimeout(() => setComments(parsed), 0);
+      } catch (err) {
+        console.error("Gagal parse komentar:", err);
+      }
+    }
+  }
+}, []);
+
+
+  // 🔹 Simpan komentar ke LocalStorage setiap kali berubah
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("meimo_comments", JSON.stringify(comments));
+    }
+  }, [comments]);
+
+  // 🔹 Tambah komentar baru
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const name = (form.querySelector("#nama-user") as HTMLInputElement).value || "Anonim";
-    const text = (form.querySelector("#isi-komentar") as HTMLTextAreaElement).value.trim();
-    if (!text) return alert("Komentar tidak boleh kosong!");
+    const form = e.currentTarget;
+    const nameInput = form.querySelector<HTMLInputElement>("#nama-user");
+    const textArea = form.querySelector<HTMLTextAreaElement>("#isi-komentar");
 
-    const newComment = { name, text, date: new Date().toLocaleString("id-ID") };
-    setComments([newComment, ...comments]);
+    const name = nameInput?.value || "Anonim";
+    const text = textArea?.value.trim() || "";
+
+    if (!text) {
+      alert("Komentar tidak boleh kosong!");
+      return;
+    }
+
+    const newComment: Comment = {
+      name,
+      text,
+      date: new Date().toLocaleString("id-ID"),
+    };
+
+    setComments((prev) => [newComment, ...prev]);
     form.reset();
   };
 
@@ -60,7 +100,9 @@ export default function Home() {
 
         <div className="container mt-5">
           <h1 className="display-3 fw-bold">Rasa MANADO</h1>
-          <p className="lead">Jelajahi cita rasamu di Manado dan temukan sejarah di balik setiap rasa.</p>
+          <p className="lead">
+            Jelajahi cita rasamu di Manado dan temukan sejarah di balik setiap rasa.
+          </p>
         </div>
       </header>
 
@@ -69,7 +111,9 @@ export default function Home() {
         <h2>
           Kenal Lebih Dekat mengenai <span className="text-primary">Meimo!</span>
         </h2>
-        <p>Masakan khas Manado dikenal dengan rasa pedas dan bumbu rempah yang kuat.</p>
+        <p>
+          Masakan khas Manado dikenal dengan rasa pedas dan bumbu rempah yang kuat.
+        </p>
       </section>
 
       {/* BRAND */}
@@ -78,8 +122,9 @@ export default function Home() {
           <div className="col-md-6">
             <h2>Apa itu Meimo?</h2>
             <p>
-              Meimo adalah brand yang didedikasikan untuk membawa cita rasa otentik masakan Manado ke panggung kuliner
-              yang lebih luas. Kami percaya pada resep warisan dan bahan-bahan segar.
+              Meimo adalah brand yang didedikasikan untuk membawa cita rasa otentik
+              masakan Manado ke panggung kuliner yang lebih luas. Kami percaya pada
+              resep warisan dan bahan-bahan segar.
             </p>
           </div>
           <div className="col-md-6 text-center">
@@ -129,9 +174,15 @@ export default function Home() {
           style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
           onClick={() => setShowModal(false)}
         >
-          <div className="modal-dialog modal-lg modal-dialog-centered" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="modal-dialog modal-lg modal-dialog-centered"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="modal-content p-4">
-              <button className="btn-close ms-auto" onClick={() => setShowModal(false)}></button>
+              <button
+                className="btn-close ms-auto"
+                onClick={() => setShowModal(false)}
+              ></button>
 
               <div className="row">
                 <div className="col-md-5">
@@ -167,10 +218,15 @@ export default function Home() {
                   </div>
 
                   <h4>Deskripsi</h4>
-                  <p>Irisan daging babi dimasak dengan kecap khas Manado yang gurih dan manis.</p>
+                  <p>
+                    Irisan daging babi dimasak dengan kecap khas Manado yang gurih dan manis.
+                  </p>
 
                   <h4>Sejarah</h4>
-                  <p>Masakan ini merupakan salah satu sajian tradisional yang sering hadir dalam acara keluarga Manado.</p>
+                  <p>
+                    Masakan ini merupakan salah satu sajian tradisional yang sering hadir
+                    dalam acara keluarga Manado.
+                  </p>
 
                   <hr />
 
@@ -186,15 +242,19 @@ export default function Home() {
                   </form>
 
                   <div className="mt-4">
-                    {comments.map((c, i) => (
-                      <div key={i} className="border rounded p-2 mb-2">
-                        <div className="d-flex justify-content-between">
-                          <strong>{c.name}</strong>
-                          <span className="text-muted small">{c.date}</span>
+                    {comments.length === 0 ? (
+                      <p className="text-muted">Belum ada komentar.</p>
+                    ) : (
+                      comments.map((c, i) => (
+                        <div key={i} className="border rounded p-2 mb-2">
+                          <div className="d-flex justify-content-between">
+                            <strong>{c.name}</strong>
+                            <span className="text-muted small">{c.date}</span>
+                          </div>
+                          <p className="mb-1">{c.text}</p>
                         </div>
-                        <p className="mb-1">{c.text}</p>
-                      </div>
-                    ))}
+                      ))
+                    )}
                   </div>
                 </div>
               </div>
