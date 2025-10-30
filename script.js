@@ -1,12 +1,11 @@
 // Menunggu semua konten HTML dimuat
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // Pilih SEMUA elemen yang ingin dianimasikan
-    // (yang memiliki kelas .fade-in-section)
     const targetElements = document.querySelectorAll('.fade-in-section');
 
     if (targetElements.length > 0) {
-        
+
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 // Jika elemennya masuk ke layar
@@ -27,7 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     } else {
-        // Ini akan muncul di console browser jika tidak ada section untuk dianimasikan
         console.log("Tidak ada elemen .fade-in-section untuk dianimasikan.");
     }
+
+    //
+    // KODE UNTUK MODAL LAMA SUDAH DIHAPUS DARI SINI
+    // Bootstrap menangani buka/tutup modal secara otomatis
+    //
 });
