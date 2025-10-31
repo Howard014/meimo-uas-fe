@@ -73,7 +73,7 @@ useEffect(() => {
       <header
         className="text-white text-center py-5 hero-section"
         style={{
-          backgroundImage: "url('/uploads/meimo.jpg')",
+          backgroundImage: "url('/uploads/background/meimo.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -152,7 +152,7 @@ useEffect(() => {
                 onClick={() => setShowModal(true)}
               >
                 <Image
-                  src="/uploads/babikecap.jpg"
+                  src="/uploads/menu/babikecap.jpg"
                   className="card-img-top"
                   alt="Babi Kecap"
                   width={400}
@@ -172,7 +172,7 @@ useEffect(() => {
                 onClick={() => setShowModal(true)}
               >
                 <Image
-                  src="/uploads/babipanggang.jpg"
+                  src="/uploads/menu/babipanggang.jpg"
                   className="card-img-top"
                   alt="Babi Panggang"
                   width={400}
@@ -192,7 +192,7 @@ useEffect(() => {
                 onClick={() => setShowModal(true)}
               >
                 <Image
-                  src="/uploads/tinoransak.jpg"
+                  src="/uploads/menu/tinoransak.jpg"
                   className="card-img-top"
                   alt="Tinoransak"
                   width={400}
@@ -213,7 +213,7 @@ useEffect(() => {
                 onClick={() => setShowModal(true)}
               >
                 <Image
-                  src="/uploads/cakalangsuwir.jpg"
+                  src="/uploads/menu/cakalangsuwir.jpg"
                   className="card-img-top"
                   alt="Cakalang Suwir"
                   width={400}
@@ -234,7 +234,7 @@ useEffect(() => {
                 onClick={() => setShowModal(true)}
               >
                 <Image
-                  src="/uploads/kangkungbungapepaya.jpg"
+                  src="/uploads/menu/kangkungbungapepaya.jpg"
                   className="card-img-top"
                   alt="Kangkung Bunga Pepaya"
                   width={400}
@@ -255,7 +255,7 @@ useEffect(() => {
                 onClick={() => setShowModal(true)}
               >
                 <Image
-                  src="/uploads/gorohomanado.jpg"
+                  src="/uploads/menu/gorohomanado.jpg"
                   className="card-img-top"
                   alt="Goroho Manado"
                   width={400}
@@ -276,7 +276,7 @@ useEffect(() => {
                 onClick={() => setShowModal(true)}
               >
                 <Image
-                  src="/uploads/perkedeljagung.jpg"
+                  src="/uploads/menu/perkedeljagung.jpg"
                   className="card-img-top"
                   alt="Perkedel Jagung"
                   width={400}
